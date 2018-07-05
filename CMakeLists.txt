@@ -97,6 +97,22 @@ file (GLOB_RECURSE websockets_EXTERNAL_SOURCES
     ext/asio/asio/window/*.hpp
 )
 
+set(Shared_SOURCES
+	include/InputLine.h
+	src/InputLine.cpp
+)
+
+
+if (WIN32)
+set(Platform_SOURCES
+)
+else()
+set(Platform_SOURCES
+	ext/conio-linux/conio.h
+	ext/conio-linux/conio.c
+)
+endif()
+
 set(TestServer_SOURCES
 	app/TestServer/TestServer.cpp
 )
@@ -136,12 +152,15 @@ endforeach()
 add_executable(TestServer
     ${websockets_EXTERNAL_SOURCES}
     ${TestServer_SOURCES}
+    ${Platform_SOURCES}
+    ${Shared_SOURCES}
 )
 
 target_include_directories(TestServer PUBLIC
     ${websockets_EXT_ROOT}
     ${websockets_EXT_ROOT}/asio
     ${websockets_ROOT}/include
+    ${websockets_EXT_ROOT}/conio-linux
 )
 
 if (WIN32)
@@ -153,6 +172,7 @@ else()
         -lGL
         -lX11
         -lpthread
+        -lncurses
     )
 endif()
 
@@ -162,12 +182,15 @@ endif()
 add_executable(TestClient
     ${websockets_EXTERNAL_SOURCES}
     ${TestClient_SOURCES}
+    ${Platform_SOURCES}
+    ${Shared_SOURCES}
 )
 
 target_include_directories(TestClient PUBLIC
     ${websockets_EXT_ROOT}
     ${websockets_EXT_ROOT}/asio
     ${websockets_ROOT}/include
+    ${websockets_EXT_ROOT}/conio-linux
 )
 
 if (WIN32)
@@ -179,6 +202,7 @@ else()
         -lGL
         -lX11
         -lpthread
+        -lncurses
     )
 endif()
 
