@@ -9,6 +9,13 @@ project(websockets)
 set(websockets_ROOT        ${PROJECT_SOURCE_DIR})
 set(websockets_EXT_ROOT    ${websockets_ROOT}/ext)
 
+
+if (WIN32)
+set(extra_INCLUDE    ${websockets_ROOT}/ext)
+else()
+set(extra_INCLUDE    ${websockets_ROOT}/ext/conio-linux)
+endif()
+
 #
 # common compiler settings
 #
@@ -160,7 +167,7 @@ target_include_directories(TestServer PUBLIC
     ${websockets_EXT_ROOT}
     ${websockets_EXT_ROOT}/asio
     ${websockets_ROOT}/include
-    ${websockets_EXT_ROOT}/conio-linux
+    ${extra_INCLUDE}
 )
 
 if (WIN32)
@@ -190,7 +197,7 @@ target_include_directories(TestClient PUBLIC
     ${websockets_EXT_ROOT}
     ${websockets_EXT_ROOT}/asio
     ${websockets_ROOT}/include
-    ${websockets_EXT_ROOT}/conio-linux
+    ${extra_INCLUDE}
 )
 
 if (WIN32)
